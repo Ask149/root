@@ -100,6 +100,7 @@ ROOT_STANDARD_LIBRARY_PACKAGE(TMVA
     TMVA/MethodDT.h
     TMVA/MethodFDA.h
     TMVA/MethodFisher.h
+    TMVA/MethodGAN.h
     TMVA/MethodHMatrix.h
     TMVA/MethodKNN.h
     TMVA/MethodLD.h
@@ -262,6 +263,7 @@ ROOT_STANDARD_LIBRARY_PACKAGE(TMVA
     src/MethodDT.cxx
     src/MethodFDA.cxx
     src/MethodFisher.cxx
+    src/MethodGAN.cxx
     src/MethodHMatrix.cxx
     src/MethodKNN.cxx
     src/MethodLD.cxx

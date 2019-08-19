@@ -516,7 +516,8 @@ void MethodDL::ParseBatchLayout()
 /// Create a deep net based on the layout string
 template <typename Architecture_t, typename Layer_t>
 void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                             std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets)
+                             std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets,
+                             std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    // Layer specification, layer details
    const TString layerDelimiter(",");
@@ -542,15 +543,16 @@ void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
       // Determine the type of the layer
       TString strLayerType = token->GetString();
 
+      const size_t inputSize = GetEvent()->GetNVariables();
 
       if (strLayerType == "DENSE") {
-         ParseDenseLayer(deepNet, nets, layerString->GetString(), subDelimiter);
+         ParseDenseLayer(inputSize, deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "CONV") {
-         ParseConvLayer(deepNet, nets, layerString->GetString(), subDelimiter);
+         ParseConvLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "MAXPOOL") {
-         ParseMaxPoolLayer(deepNet, nets, layerString->GetString(), subDelimiter);
+         ParseMaxPoolLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "RESHAPE") {
-         ParseReshapeLayer(deepNet, nets, layerString->GetString(), subDelimiter);
+         ParseReshapeLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "RNN") {
          ParseRnnLayer(deepNet, nets, layerString->GetString(), subDelimiter);
       // } else if (strLayerType == "LSTM") {
@@ -559,7 +561,7 @@ void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
       //    break;
       } else {
          // no type of layer specified - assume is dense layer as in old DNN interface
-         ParseDenseLayer(deepNet, nets, layerString->GetString(), subDelimiter);
+         ParseDenseLayer(inputSize,deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       }
    }
 }
@@ -567,9 +569,9 @@ void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
 ////////////////////////////////////////////////////////////////////////////////
 /// Pases the layer string and creates the appropriate dense layer
 template <typename Architecture_t, typename Layer_t>
-void MethodDL::ParseDenseLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & /*nets*/, TString layerString,
-                               TString delim)
+void MethodDL::ParseDenseLayer(size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
+                               TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    int width = 0;
    EActivationFunction activationFunction = EActivationFunction::kTanh;
@@ -577,7 +579,7 @@ void MethodDL::ParseDenseLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
    // this return number of input variables for the method
    // it can be used to deduce width of dense layer if specified as N+10
    // where N is the number of input variables 
-   const size_t inputSize = GetNvar();
+   //const size_t inputSize = GetNvar();
 
    // Split layer details
    TObjArray *subStrings = layerString.Tokenize(delim);
@@ -633,12 +635,14 @@ void MethodDL::ParseDenseLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
    // add same layer to fNet
    if (fBuildNet) fNet->AddDenseLayer(width, activationFunction);
 
-   //TDenseLayer<Architecture_t> *copyDenseLayer = new TDenseLayer<Architecture_t>(*denseLayer);
+   modelNet->AddDenseLayer(width,activationFunction);
+
+   TDenseLayer<Architecture_t> *copyDenseLayer = new TDenseLayer<Architecture_t>(*denseLayer);
 
    // add the copy to all slave nets
-   //for (size_t i = 0; i < nets.size(); i++) {
-   //   nets[i].AddDenseLayer(copyDenseLayer);
-   //}
+   for (size_t i = 0; i < nets.size(); i++) {
+      nets[i].AddDenseLayer(copyDenseLayer);
+   }
 
    // check compatibility of added layer
    // for a dense layer input should be 1 x 1 x DxHxW
@@ -648,8 +652,8 @@ void MethodDL::ParseDenseLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
 /// Pases the layer string and creates the appropriate convolutional layer
 template <typename Architecture_t, typename Layer_t>
 void MethodDL::ParseConvLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                              std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & /*nets*/, TString layerString,
-                              TString delim)
+                              std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
+                              TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    int depth = 0;
    int fltHeight = 0;
@@ -735,20 +739,23 @@ void MethodDL::ParseConvLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
    if (fBuildNet) fNet->AddConvLayer(depth, fltHeight, fltWidth, strideRows, strideCols,
                       zeroPadHeight, zeroPadWidth, activationFunction);
 
-   //TConvLayer<Architecture_t> *copyConvLayer = new TConvLayer<Architecture_t>(*convLayer);
+    modelNet->AddConvLayer(depth, fltHeight, fltWidth, strideRows, strideCols,
+                      zeroPadHeight, zeroPadWidth, activationFunction);
+
+   TConvLayer<Architecture_t> *copyConvLayer = new TConvLayer<Architecture_t>(*convLayer);
 
    //// add the copy to all slave nets
-   //for (size_t i = 0; i < nets.size(); i++) {
-   //   nets[i].AddConvLayer(copyConvLayer);
-   //}
+   for (size_t i = 0; i < nets.size(); i++) {
+      nets[i].AddConvLayer(copyConvLayer);
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Pases the layer string and creates the appropriate max pool layer
 template <typename Architecture_t, typename Layer_t>
 void MethodDL::ParseMaxPoolLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                                 std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & /*nets*/, TString layerString,
-                                 TString delim)
+                                 std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
+                                 TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
 
    int filterHeight = 0;
@@ -789,27 +796,26 @@ void MethodDL::ParseMaxPoolLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet
    }
 
    // Add the Max pooling layer
-   // TMaxPoolLayer<Architecture_t> *maxPoolLayer =
-   deepNet.AddMaxPoolLayer(filterHeight, filterWidth, strideRows, strideCols);
+    TMaxPoolLayer<Architecture_t> *maxPoolLayer =   deepNet.AddMaxPoolLayer(filterHeight, filterWidth, strideRows, strideCols);
 
    // Add the same layer to fNet
    if (fBuildNet) fNet->AddMaxPoolLayer(filterHeight, filterWidth, strideRows, strideCols);
 
-
-   //TMaxPoolLayer<Architecture_t> *copyMaxPoolLayer = new TMaxPoolLayer<Architecture_t>(*maxPoolLayer);
+   modelNet->AddMaxPoolLayer(filterHeight, filterWidth, strideRows, strideCols);
+   TMaxPoolLayer<Architecture_t> *copyMaxPoolLayer = new TMaxPoolLayer<Architecture_t>(*maxPoolLayer);
 
    //// add the copy to all slave nets
-   //for (size_t i = 0; i < nets.size(); i++) {
-   //   nets[i].AddMaxPoolLayer(copyMaxPoolLayer);
-   //}
+   for (size_t i = 0; i < nets.size(); i++) {
+      nets[i].AddMaxPoolLayer(copyMaxPoolLayer);
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Pases the layer string and creates the appropriate reshape layer
 template <typename Architecture_t, typename Layer_t>
 void MethodDL::ParseReshapeLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                                 std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & /*nets*/, TString layerString,
-                                 TString delim)
+                                 std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
+                                 TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    int depth = 0;
    int height = 0;
@@ -851,18 +857,19 @@ void MethodDL::ParseReshapeLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet
    }
 
    // Add the reshape layer
-   // TReshapeLayer<Architecture_t> *reshapeLayer =
-   deepNet.AddReshapeLayer(depth, height, width, flattening);
+   TReshapeLayer<Architecture_t> *reshapeLayer = deepNet.AddReshapeLayer(depth, height, width, flattening);
 
    // Add the same layer to fNet
    if (fBuildNet) fNet->AddReshapeLayer(depth, height, width, flattening);
 
-   //TReshapeLayer<Architecture_t> *copyReshapeLayer = new TReshapeLayer<Architecture_t>(*reshapeLayer);
+   modelNet->AddReshapeLayer(depth, height, width, flattening);
+
+   TReshapeLayer<Architecture_t> *copyReshapeLayer = new TReshapeLayer<Architecture_t>(*reshapeLayer);
 
    //// add the copy to all slave nets
-   //for (size_t i = 0; i < nets.size(); i++) {
-   //   nets[i].AddReshapeLayer(copyReshapeLayer);
-   //}
+   for (size_t i = 0; i < nets.size(); i++) {
+      nets[i].AddReshapeLayer(copyReshapeLayer);
+   }
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1205,7 +1212,7 @@ void MethodDL::TrainDeepNet()
 
 
       // Add all appropriate layers to deepNet and (if fBuildNet is true) also to fNet
-      CreateDeepNet(deepNet, nets);
+      CreateDeepNet(deepNet, nets, fNet);
 
 
       // set droput probabilities
@@ -1674,7 +1681,7 @@ std::vector<Double_t> MethodDL::PredictDeepNet(Long64_t firstEvt, Long64_t lastE
    DeepNet_t deepNet(batchSize, inputDepth, inputHeight, inputWidth, batchDepth, batchHeight, batchWidth, J, I, R, weightDecay);
    std::vector<DeepNet_t> nets{};
    fBuildNet = false; 
-   CreateDeepNet(deepNet,nets);
+   CreateDeepNet(deepNet,nets,fNet);
 
    // copy weights from the saved fNet to the built DeepNet
    for (size_t i = 0; i < deepNet.GetDepth(); ++i) {

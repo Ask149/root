@@ -57,6 +57,7 @@ template <typename Architecture_t>
 class TTensorBatch {
 public:
    using Matrix_t = typename Architecture_t::Matrix_t;
+   using TensorInput = std::tuple<const std::vector<Matrix_t> &, const Matrix_t &, const Matrix_t &>;
 
 private:
    std::vector<Matrix_t> fInputTensor; ///< The input tensor batch, one matrix one input.
@@ -132,6 +133,7 @@ private:
    using HostBuffer_t = typename Architecture_t::HostBuffer_t;
    using DeviceBuffer_t = typename Architecture_t::DeviceBuffer_t;
    using Matrix_t = typename Architecture_t::Matrix_t;
+   using TensorInput = std::tuple<const std::vector<Matrix_t> &, const Matrix_t &, const Matrix_t &>;
    using BatchIterator_t = TTensorBatchIterator<Data_t, Architecture_t>;
 
    const Data_t &fData; ///< The data that should be loaded in the batches.
