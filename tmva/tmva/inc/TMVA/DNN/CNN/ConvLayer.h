@@ -57,6 +57,8 @@ private:
                                size_t inputWidth, size_t filterWidth, size_t paddingWidth, size_t strideCols);
 
 protected:
+   TString fLayerType; ///< Type of layer
+
    size_t fFilterDepth;  ///< The depth of the filter.
    size_t fFilterHeight; ///< The height of the filter.
    size_t fFilterWidth;  ///< The width of the filter.
