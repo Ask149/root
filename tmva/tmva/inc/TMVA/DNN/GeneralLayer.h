@@ -244,7 +244,7 @@ VGeneralLayer<Architecture_t>::VGeneralLayer(size_t batchSize, size_t inputDepth
 //_________________________________________________________________________________________________
 template <typename Architecture_t>
 VGeneralLayer<Architecture_t>::VGeneralLayer(size_t batchSize, size_t inputDepth, size_t inputHeight, size_t inputWidth,
-                                             size_t depth, size_t height, size_t width, size_t weightsNSlices,
+                                             size_t depth, size_t height, size_t width, TString layerType, size_t weightsNSlices,
                                              std::vector<size_t> weightsNRows, std::vector<size_t> weightsNCols,
                                              size_t biasesNSlices, std::vector<size_t> biasesNRows,
                                              std::vector<size_t> biasesNCols, size_t outputNSlices, size_t outputNRows,

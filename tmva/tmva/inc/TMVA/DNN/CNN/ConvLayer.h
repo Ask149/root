@@ -85,7 +85,7 @@ private:
 
 public:
    /*! Constructor. */
-   TConvLayer(size_t BatchSize, size_t InputDepth, size_t InputHeight, size_t InputWidth, size_t Depth, EInitialization Init,
+   TConvLayer(size_t BatchSize, size_t InputDepth, size_t InputHeight, size_t InputWidth, size_t Depth, TString layerType, EInitialization Init,
               size_t FilterHeight, size_t FilterWidth, size_t StrideRows, size_t StrideCols, size_t PaddingHeight,
               size_t PaddingWidth, Scalar_t DropoutProbability, EActivationFunction f, ERegularization Reg,
               Scalar_t WeightDecay);
@@ -162,8 +162,6 @@ public:
    size_t inputDepth;  ///< The depth of the previous layer or input.
    size_t inputHeight; ///< The height of the previous layer or input.
    size_t inputWidth;  ///< The width of the previous layer or input.
-
-   TString fLayerType; ///< Type of layer
 
    size_t numberFilters; ///< The number of the filters, which is equal to the output's depth.
    size_t filterHeight; ///< The height of the filter.
