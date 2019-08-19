@@ -111,7 +111,7 @@ TMaxPoolLayer<Architecture_t>::TMaxPoolLayer(size_t batchSize, size_t inputDepth
                                              size_t filterHeight, size_t filterWidth, size_t strideRows,
                                              size_t strideCols, Scalar_t dropoutProbability)
 
-        : TConvLayer<Architecture_t>(batchSize, inputDepth, inputHeight, inputWidth, inputDepth, EInitialization::kZero,
+        : TConvLayer<Architecture_t>(batchSize, inputDepth, inputHeight, inputWidth, inputDepth, "MAXPOOL", EInitialization::kZero,
                                      filterHeight, filterWidth, strideRows, strideCols, 0, 0, dropoutProbability,
                                      EActivationFunction::kIdentity, ERegularization::kNone, 0),
           indexMatrix()

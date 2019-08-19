@@ -127,6 +127,8 @@ public:
    size_t GetFilterHeight() const { return fFilterHeight; }
    size_t GetFilterWidth() const { return fFilterWidth; }
 
+   TString GetLayerType() const { return fLayerType; }
+
    size_t GetStrideRows() const { return fStrideRows; }
    size_t GetStrideCols() const { return fStrideCols; }
 
@@ -161,6 +163,8 @@ public:
    size_t inputHeight; ///< The height of the previous layer or input.
    size_t inputWidth;  ///< The width of the previous layer or input.
 
+   TString fLayerType; ///< Type of layer
+
    size_t numberFilters; ///< The number of the filters, which is equal to the output's depth.
    size_t filterHeight; ///< The height of the filter.
    size_t filterWidth;  ///< The width of the filter.
@@ -187,13 +191,13 @@ public:
 //______________________________________________________________________________
 template <typename Architecture_t>
 TConvLayer<Architecture_t>::TConvLayer(size_t batchSize, size_t inputDepth, size_t inputHeight, size_t inputWidth,
-                                       size_t depth, EInitialization init, size_t filterHeight, size_t filterWidth,
+                                       size_t depth, TString layerType, EInitialization init, size_t filterHeight, size_t filterWidth,
                                        size_t strideRows, size_t strideCols, size_t paddingHeight, size_t paddingWidth,
                                        Scalar_t dropoutProbability, EActivationFunction f, ERegularization reg,
                                        Scalar_t weightDecay)
    : VGeneralLayer<Architecture_t>(batchSize, inputDepth, inputHeight, inputWidth, depth,
                                    calculateDimension(inputHeight, filterHeight, paddingHeight, strideRows),
-                                   calculateDimension(inputWidth, filterWidth, paddingWidth, strideCols),
+                                   calculateDimension(inputWidth, filterWidth, paddingWidth, strideCols), "CONV",
                                    1, depth, calculateNLocalViewPixels(inputDepth, filterHeight, filterWidth),
                                    1, depth, 1, batchSize, depth,
                                    calculateNLocalViews(inputHeight, filterHeight, paddingHeight, strideRows,
