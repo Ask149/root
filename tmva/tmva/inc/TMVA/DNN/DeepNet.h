@@ -430,7 +430,7 @@ TConvLayer<Architecture_t> *TDeepNet<Architecture_t, Layer_t>::AddConvLayer(size
 
    // Create the conv layer
    TConvLayer<Architecture_t> *convLayer = new TConvLayer<Architecture_t>(
-           batchSize, inputDepth, inputHeight, inputWidth, depth, "CONV" init, filterHeight, filterWidth, strideRows,
+           batchSize, inputDepth, inputHeight, inputWidth, depth, "CONV", init, filterHeight, filterWidth, strideRows,
            strideCols, paddingHeight, paddingWidth, dropoutProbability, f, reg, decay);
 
    fLayers.push_back(convLayer);
