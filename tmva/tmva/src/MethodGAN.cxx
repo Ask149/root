@@ -697,18 +697,16 @@ void MethodGAN::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
 
       const size_t inputSize = GetEvent()->GetNVariables();
 
-      MethodDL obj("GANs","",,"");
-
       if (strLayerType == "DENSE") {
-         obj.ParseDenseLayer(inputSize, deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         MethodDL::ParseDenseLayer(inputSize, deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "CONV") {
-         obj.ParseConvLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         MethodDL::ParseConvLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "MAXPOOL") {
-         obj.ParseMaxPoolLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         MethodDL::ParseMaxPoolLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "RESHAPE") {
-         obj.ParseReshapeLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         MethodDL::ParseReshapeLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "RNN") {
-         obj.ParseRnnLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         MethodDL::ParseRnnLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "LSTM") {
          Log() << kFATAL << "LSTM Layer is not yet fully implemented" << Endl;
          //MethodDL::ParseLstmLayer(deepNet, nets, layerString->GetString(), subDelimiter);

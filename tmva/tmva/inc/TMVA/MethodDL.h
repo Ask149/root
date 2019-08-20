@@ -118,31 +118,31 @@ private:
                       std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseDenseLayer(size_t inputSize,DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseDenseLayer(size_t inputSize,DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                         std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim
                         , std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseConvLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseConvLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                         std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim
                         , std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseMaxPoolLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseMaxPoolLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                         std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim
                         , std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseReshapeLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseReshapeLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                         std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim
                         , std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseRnnLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseRnnLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                       std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim);
 
    template <typename Architecture_t, typename Layer_t>
-   void ParseLstmLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+   static void ParseLstmLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
                        std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim);
 
    /// train of deep neural network using the defined architecture
