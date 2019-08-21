@@ -698,7 +698,7 @@ void MethodGAN::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
       const size_t inputSize = GetEvent()->GetNVariables();
 
       DataSetInfo dummy("");
-      MethodDL obj("","",,"");
+      MethodDL obj("","",dummy,"");
 
       if (strLayerType == "DENSE") {
          obj.ParseDenseLayer(inputSize, deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
