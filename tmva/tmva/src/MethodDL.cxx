@@ -569,8 +569,8 @@ void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
 ////////////////////////////////////////////////////////////////////////////////
 /// Pases the layer string and creates the appropriate dense layer
 template <typename Architecture_t, typename Layer_t>
-void MethodDL::ParseDenseLayer(size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
+ void MethodDL::ParseDenseLayer(size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t> > & nets, std::allocator<DNN::TDeepNet<Architecture_t, Layer_t>> temp, TString layerString,
                                TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    int width = 0;
@@ -959,9 +959,10 @@ MethodDL::MethodDL(const TString &jobName, const TString &methodTitle, DataSetIn
    : MethodBase(jobName, Types::kDL, methodTitle, theData, theOption), fInputDepth(), fInputHeight(), fInputWidth(),
      fBatchDepth(), fBatchHeight(), fBatchWidth(), fRandomSeed(0), fWeightInitialization(), fOutputFunction(), fLossFunction(),
      fInputLayoutString(), fBatchLayoutString(), fLayoutString(), fErrorStrategy(), fTrainingStrategyString(),
-     fWeightInitializationString(), fArchitectureString(), fResume(false), fBuildNet(true), fTrainingSettings()
+     fWeightInitializationString(), fArchitectureString(), fResume(false), /*fBuildNet(true),*/ fTrainingSettings()
 {
    // Nothing to do here
+  fBuildNet = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -970,9 +971,10 @@ MethodDL::MethodDL(DataSetInfo &theData, const TString &theWeightFile)
    : MethodBase(Types::kDL, theData, theWeightFile), fInputDepth(), fInputHeight(), fInputWidth(), fBatchDepth(),
      fBatchHeight(), fBatchWidth(), fRandomSeed(0), fWeightInitialization(), fOutputFunction(), fLossFunction(), fInputLayoutString(),
      fBatchLayoutString(), fLayoutString(), fErrorStrategy(), fTrainingStrategyString(), fWeightInitializationString(),
-     fArchitectureString(), fResume(false), fBuildNet(true), fTrainingSettings()
+     fArchitectureString(), fResume(false), /*fBuildNet(true),*/ fTrainingSettings()
 {
    // Nothing to do here
+  fBuildNet = true;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
