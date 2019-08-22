@@ -569,8 +569,8 @@ void MethodDL::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
 ////////////////////////////////////////////////////////////////////////////////
 /// Pases the layer string and creates the appropriate dense layer
 template <typename Architecture_t, typename Layer_t>
- void MethodDL::ParseDenseLayer(size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t> > & nets, std::allocator<DNN::TDeepNet<Architecture_t, Layer_t>> temp, TString layerString,
+void MethodDL::ParseDenseLayer(const size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+                               std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets, TString layerString,
                                TString delim, std::unique_ptr<DeepNetImpl_t> &modelNet)
 {
    int width = 0;
@@ -876,7 +876,7 @@ void MethodDL::ParseReshapeLayer(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet
 /// Pases the layer string and creates the appropriate rnn layer
 template <typename Architecture_t, typename Layer_t>
 void MethodDL::ParseRnnLayer(DNN::TDeepNet<Architecture_t, Layer_t> & deepNet,
-                             std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & /*nets */, TString layerString,
+                             std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> & nets , TString layerString,
                              TString delim)
 {
    //    int depth = 0;

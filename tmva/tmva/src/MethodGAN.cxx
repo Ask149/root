@@ -709,7 +709,7 @@ void MethodGAN::CreateDeepNet(DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
       } else if (strLayerType == "RESHAPE") {
          obj.ParseReshapeLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
       } else if (strLayerType == "RNN") {
-         obj.ParseRnnLayer(deepNet, nets, layerString->GetString(), subDelimiter, modelNet);
+         obj.ParseRnnLayer(deepNet, nets, layerString->GetString(), subDelimiter);
       } else if (strLayerType == "LSTM") {
          Log() << kFATAL << "LSTM Layer is not yet fully implemented" << Endl;
          //MethodDL::ParseLstmLayer(deepNet, nets, layerString->GetString(), subDelimiter);

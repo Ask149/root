@@ -85,9 +85,9 @@ private:
 // #else
 // do not use arch GPU for evaluation. It is too slow for batch size=1   
 #ifdef R__HAS_TMVACPU
-   using ArchitectureImpl_t = TMVA::DNN::TCpu<Float_t>;
+   using ArchitectureImpl_t = TMVA::DNN::TCpu<Double_t>;
 #else
-   using ArchitectureImpl_t = TMVA::DNN::TReference<Float_t>;
+   using ArchitectureImpl_t = TMVA::DNN::TReference<Double_t>;
 #endif  
 //#endif
    using DeepNetImpl_t = TMVA::DNN::TDeepNet<ArchitectureImpl_t>;
@@ -118,8 +118,8 @@ private:
                       std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
-    void ParseDenseLayer(size_t inputSize,DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
-                        std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets,std::allocator<DNN::TDeepNet<Architecture_t, Layer_t>> temp, TString layerString, TString delim
+   void ParseDenseLayer(const size_t inputSize, DNN::TDeepNet<Architecture_t, Layer_t> &deepNet,
+                        std::vector<DNN::TDeepNet<Architecture_t, Layer_t>> &nets, TString layerString, TString delim
                         , std::unique_ptr<DeepNetImpl_t> &modelNet);
 
    template <typename Architecture_t, typename Layer_t>
