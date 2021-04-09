@@ -9,39 +9,11 @@
  * For the list of contributors see $ROOTSYS/README/CREDITS.             *
  *************************************************************************/
 
-#ifndef ROOT_TPasswdDialog
-#define ROOT_TPasswdDialog
+#ifndef ROOT_TGPasswdDialog
+#define ROOT_TGPasswdDialog
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGPasswdDialog                                                       //
-//                                                                      //
-// Graphic dialog to enter passwords                                    //
-//                                                                      //
-// Usage:                                                               //
-//                                                                      //
-// {                                                                    //
-//   // Buffer for the passwd                                           //
-//   char pwdbuf[128]                                                   //
-//                                                                      //
-//   Open the dialog box                                                //
-//   TGPasswdDialog dialog("My prompt", pwdbuf, 128);                   //
-//                                                                      //
-//   // Wait until the user is done                                     //
-//   while (gROOT->IsInterrupted())                                     //
-//      gSystem->DispatchOneEvent(kFALSE);                              //
-//                                                                      //
-//   // Password is now in pwdbuf                                       //
-//   ...                                                                //
-//                                                                      //
-// }                                                                    //
-//                                                                      //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
-#include "TTime.h"
-#include "TString.h"
+#include "Rtypes.h"
 
 class TGTransientFrame;
 class TGTextButton;

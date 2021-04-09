@@ -13,20 +13,9 @@
 #define ROOT_TGWidget
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGWidget                                                             //
-//                                                                      //
-// The widget base class. It is light weight (all inline service        //
-// methods) and is typically used as mixin class (via multiple          //
-// inheritance), see for example TGButton.                              //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
 #include "GuiTypes.h"
-#include "TGString.h"
 #include "WidgetMessageTypes.h"
-
+#include "TString.h"
 
 //--- Text justification modes
 
@@ -50,7 +39,6 @@ enum EWidgetStatus {
 
 
 class TGWindow;
-
 
 class TGWidget {
 

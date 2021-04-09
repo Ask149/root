@@ -13,15 +13,6 @@
 #define ROOT_TGClient
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGClient                                                             //
-//                                                                      //
-// Window client. In client server windowing systems, like X11 this     //
-// class is used to make the initial connection to the window server.   //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
-
 #include "TObject.h"
 #include "GuiTypes.h"
 #include "TString.h"
@@ -75,20 +66,20 @@ protected:
    Window_t        fWaitForWindow;    // window in which to wait for event
    UInt_t          fStyle;            // GUI style (modern or classic)
 
-   TGClient(const TGClient&);             // not implemented
-   TGClient& operator=(const TGClient&);  // not implemented
+   TGClient(const TGClient&) = delete;
+   TGClient& operator=(const TGClient&) = delete;
 
    Bool_t  ProcessOneEvent();
    Bool_t  ProcessIdleEvent();
    Bool_t  DoRedraw();
 
 public:
-   TGClient(const char *dpyName = 0);
+   TGClient(const char *dpyName = nullptr);
    virtual ~TGClient();
 
    const TGWindow *GetRoot() const;
    const TGWindow *GetDefaultRoot() const;
-   void            SetRoot(TGWindow *root = 0);
+   void            SetRoot(TGWindow *root = nullptr);
    TGWindow       *GetWindowById(Window_t sw) const;
    TGWindow       *GetWindowByName(const char *name) const;
 

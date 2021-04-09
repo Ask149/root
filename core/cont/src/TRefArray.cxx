@@ -97,10 +97,9 @@ Fatal in <TProcessID::AddProcessID>: Maximum number of TProcessID (65535) has be
 
 #include "TRefArray.h"
 #include "TRefTable.h"
+#include "TBuffer.h"
 #include "TError.h"
 #include "TBits.h"
-#include "TSystem.h"
-#include "TROOT.h"
 
 ClassImp(TRefArray);
 
@@ -110,7 +109,7 @@ ClassImp(TRefArray);
 TRefArray::TRefArray(TProcessID *pid)
 {
    fPID  = pid ? pid : TProcessID::GetSessionProcessID();
-   fUIDs = 0;
+   fUIDs = nullptr;
    fSize = 0;
    fLast = -1;
    fLowerBound = 0;
@@ -130,7 +129,7 @@ TRefArray::TRefArray(Int_t s, TProcessID *pid)
    }
 
    fPID  = pid ? pid : TProcessID::GetSessionProcessID();
-   fUIDs = 0;
+   fUIDs = nullptr;
    Init(s, 0);
 }
 
@@ -147,7 +146,7 @@ TRefArray::TRefArray(Int_t s, Int_t lowerBound, TProcessID *pid)
    }
 
    fPID  = pid ? pid : TProcessID::GetSessionProcessID();
-   fUIDs = 0;
+   fUIDs = nullptr;
    Init(s, lowerBound);
 }
 
@@ -157,7 +156,7 @@ TRefArray::TRefArray(Int_t s, Int_t lowerBound, TProcessID *pid)
 TRefArray::TRefArray(const TRefArray &a) : TSeqCollection()
 {
    fPID  = a.fPID;
-   fUIDs = 0;
+   fUIDs = nullptr;
    Init(a.fSize, a.fLowerBound);
 
    for (Int_t i = 0; i < fSize; i++)
@@ -198,7 +197,7 @@ TRefArray::~TRefArray()
 {
    if (fUIDs) delete [] fUIDs;
    fPID  = 0;
-   fUIDs = 0;
+   fUIDs = nullptr;
    fSize = 0;
 }
 
@@ -346,7 +345,7 @@ void TRefArray::AddAtAndExpand(TObject *obj, Int_t idx)
    // Check if the object can belong here
    Int_t uid;
    if (GetObjectUID(uid, obj, "AddAtAndExpand")) {
-      fUIDs[idx-fLowerBound] = uid;
+      fUIDs[idx-fLowerBound] = uid;   // NOLINT
       fLast = TMath::Max(idx-fLowerBound, GetAbsLast());
       Changed();
    }
@@ -364,7 +363,7 @@ void TRefArray::AddAt(TObject *obj, Int_t idx)
    // Check if the object can belong here
    Int_t uid;
    if (GetObjectUID(uid, obj, "AddAt")) {
-      fUIDs[idx-fLowerBound] = uid;;
+      fUIDs[idx-fLowerBound] = uid;
       fLast = TMath::Max(idx-fLowerBound, GetAbsLast());
       Changed();
    }
@@ -384,7 +383,7 @@ Int_t  TRefArray::AddAtFree(TObject *obj)
             // Check if the object can belong here
             Int_t uid;
             if (GetObjectUID(uid, obj, "AddAtFree")) {
-               fUIDs[i] = uid;
+               fUIDs[i] = uid;    // NOLINT
                fLast = TMath::Max(i, GetAbsLast());
                Changed();
                return i+fLowerBound;
@@ -462,7 +461,7 @@ void TRefArray::Delete(Option_t *)
    fSize = 0;
    if (fUIDs) {
       delete [] fUIDs;
-      fUIDs = 0;
+      fUIDs = nullptr;
    }
 
    Changed();
@@ -481,13 +480,16 @@ void TRefArray::Expand(Int_t newSize)
    UInt_t *temp = fUIDs;
    if (newSize != 0) {
       fUIDs = new UInt_t[newSize];
-      if (newSize < fSize) memcpy(fUIDs,temp, newSize*sizeof(UInt_t));
-      else {
-         memcpy(fUIDs,temp,fSize*sizeof(UInt_t));
-         memset(&fUIDs[fSize],0,(newSize-fSize)*sizeof(UInt_t));
+      if (newSize < fSize) {
+         memcpy(fUIDs, temp, newSize*sizeof(UInt_t));
+      } else if (temp) {
+         memcpy(fUIDs, temp, fSize*sizeof(UInt_t));
+         memset(&fUIDs[fSize], 0, (newSize-fSize)*sizeof(UInt_t));
+      } else {
+         memset(fUIDs, 0, newSize*sizeof(UInt_t));
       }
    } else {
-      fUIDs = 0;
+      fUIDs = nullptr;
    }
    if (temp) delete [] temp;
    fSize = newSize;
@@ -682,7 +684,7 @@ void TRefArray::Init(Int_t s, Int_t lowerBound)
 {
    if (fUIDs && fSize != s) {
       delete [] fUIDs;
-      fUIDs = 0;
+      fUIDs = nullptr;
    }
 
    fSize = s;
@@ -691,7 +693,7 @@ void TRefArray::Init(Int_t s, Int_t lowerBound)
       fUIDs = new UInt_t[fSize];
       for (Int_t i=0;i<s;i++) fUIDs[i] = 0;
    } else {
-      fUIDs = 0;
+      fUIDs = nullptr;
    }
    fLowerBound = lowerBound;
    fLast = -1;

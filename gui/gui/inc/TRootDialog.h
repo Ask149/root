@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   20/02/98
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,16 +12,6 @@
 #ifndef ROOT_TRootDialog
 #define ROOT_TRootDialog
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TRootDialog                                                          //
-//                                                                      //
-// A TRootDialog is used to prompt for the arguments of an object's     //
-// member function. A TRootDialog is created via the context menu's     //
-// when selecting a member function taking arguments.                   //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 
@@ -41,7 +31,7 @@ private:
    Bool_t            fHelp;    // if true show Online Help button
 
 public:
-   TRootDialog(TRootContextMenu *cmenu = 0, const TGWindow *main = 0,
+   TRootDialog(TRootContextMenu *cmenu = nullptr, const TGWindow *main = nullptr,
                const char *title = "ROOT Dialog", Bool_t okB = kTRUE,
                Bool_t cancelB = kTRUE, Bool_t applyB = kFALSE,
                Bool_t helpB = kTRUE);

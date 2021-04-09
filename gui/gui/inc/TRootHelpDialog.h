@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   24/02/98
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,15 +12,6 @@
 #ifndef ROOT_TRootHelpDialog
 #define ROOT_TRootHelpDialog
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TRootHelpDialog                                                      //
-//                                                                      //
-// A TRootHelpDialog is used to display help text (or any text in a     //
-// dialog window). There is on OK button to popdown the dialog.         //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 
@@ -37,11 +28,11 @@ private:
    TGLayoutHints    *fL2;     // layout of OK button
 
 private:
-   TRootHelpDialog(const TRootHelpDialog&);            // not implemented
-   TRootHelpDialog& operator=(const TRootHelpDialog&); // not implemented
+   TRootHelpDialog(const TRootHelpDialog&) = delete;
+   TRootHelpDialog& operator=(const TRootHelpDialog&) = delete;
 
 public:
-   TRootHelpDialog(const TGWindow *main = 0, const char *title = "ROOT Help Dialog",
+   TRootHelpDialog(const TGWindow *main = nullptr, const char *title = "ROOT Help Dialog",
                    UInt_t w = 1, UInt_t h = 1);
    virtual ~TRootHelpDialog();
 

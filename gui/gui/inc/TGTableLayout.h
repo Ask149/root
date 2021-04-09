@@ -2,7 +2,7 @@
 // Author: Brett Viren   04/15/2001
 
 /*************************************************************************
- * Copyright (C) 2001, Brett Viren                                       *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -14,7 +14,6 @@
 
 #include "TGLayout.h"
 
-
 // extension of ELayoutHints
 enum ETableLayoutHints {
    kLHintsShrinkX = BIT(8),
@@ -24,19 +23,13 @@ enum ETableLayoutHints {
 };
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGTableLayoutHints                                                   //
-//                                                                      //
-// This class describes layout hints used by the TGTableLayout class.   //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+
 
 class TGTableLayoutHints : public TGLayoutHints {
 
 private:
-   TGTableLayoutHints(const TGTableLayoutHints&); // Not implemented
-   TGTableLayoutHints& operator=(const TGTableLayoutHints&); // Not implemented
+   TGTableLayoutHints(const TGTableLayoutHints&) = delete;
+   TGTableLayoutHints& operator=(const TGTableLayoutHints&) = delete;
 
 protected:
    UInt_t fAttachLeft;         // Column/row division number on which
@@ -67,26 +60,13 @@ public:
 };
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGTableLayout                                                        //
-//                                                                      //
-// A LayoutManager which places child frames in a table. This uses      //
-// TGTableLayoutHints (not TGLayoutHints). See TGTableLayoutHints       //
-// for how to use these. This manager works like TGMatrixLayout with    //
-// the addition that:                                                   //
-//  - Child frames can span more than one column/row.                   //
-//  - Child frames can resize with the frame.                           //
-//  - Column and row sizes are not fixed nor (optionally) homogeneous.  //
-//  - The number of columns and rows must be fully specified.           //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+
 
 class TGTableLayout : public TGLayoutManager {
 
 private:
-   TGTableLayout(const TGTableLayout&); // Not implemented
-   TGTableLayout& operator=(const TGTableLayout&); // Not implemented
+   TGTableLayout(const TGTableLayout&) = delete;
+   TGTableLayout& operator=(const TGTableLayout&) = delete;
 
 protected:
    struct TableData_t {

@@ -2,7 +2,7 @@
 // Author: Abdelhalim Ssadik   07/07/04
 
 /*************************************************************************
- * Copyright (C) 1995-2004, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,17 +12,6 @@
 #ifndef ROOT_TGDockableFrame
 #define ROOT_TGDockableFrame
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// A TGDockableFrame is a frame with handles that allow it to be        //
-// undocked (i.e. put in a transient frame of its own) and to be docked //
-// again or hidden and shown again. It uses the TGDockButton, which is  //
-// a button with two vertical bars (||) and TGDockHideButton, which is  //
-// a button with a small triangle. The TGUndockedFrame is a transient   //
-// frame that on closure will put the frame back in the dock.           //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 
@@ -46,7 +35,7 @@ protected:
    virtual void DoRedraw();
 
 public:
-   TGDockButton(const TGCompositeFrame *p = 0, Int_t id = 1);
+   TGDockButton(const TGCompositeFrame *p = nullptr, Int_t id = 1);
    virtual ~TGDockButton();
 
    virtual Bool_t HandleCrossing(Event_t *event);
@@ -62,7 +51,7 @@ protected:
    virtual void DoRedraw();
 
 public:
-   TGDockHideButton(const TGCompositeFrame *p = 0);
+   TGDockHideButton(const TGCompositeFrame *p = nullptr);
 
    void SetAspectRatio(Int_t a) { fAspectRatio = a; DoRedraw(); }
 
@@ -73,8 +62,8 @@ public:
 class TGUndockedFrame : public TGTransientFrame {
 
 private:
-   TGUndockedFrame(const TGUndockedFrame&); // Not implemented
-   TGUndockedFrame& operator=(const TGUndockedFrame&); // Not implemented
+   TGUndockedFrame(const TGUndockedFrame&) = delete;
+   TGUndockedFrame& operator=(const TGUndockedFrame&) = delete;
 
 protected:
    TGDockableFrame    *fDockable;   // orignal dockable frame
@@ -94,8 +83,8 @@ class TGDockableFrame : public TGCompositeFrame, public TGWidget {
 friend class TGUndockedFrame;
 
 private:
-   TGDockableFrame(const TGDockableFrame&); // Not implemented
-   TGDockableFrame& operator=(const TGDockableFrame&); // Not implemented
+   TGDockableFrame(const TGDockableFrame&) = delete;
+   TGDockableFrame& operator=(const TGDockableFrame&) = delete;
 
 protected:
    Bool_t            fHidden;        // if frame is hidden
@@ -113,7 +102,7 @@ protected:
    TGLayoutHints    *fLb, *fLc;      // layout hints
 
 public:
-   TGDockableFrame(const TGWindow *p = 0, Int_t id = -1,
+   TGDockableFrame(const TGWindow *p = nullptr, Int_t id = -1,
                    UInt_t options = kHorizontalFrame);
    virtual ~TGDockableFrame();
 

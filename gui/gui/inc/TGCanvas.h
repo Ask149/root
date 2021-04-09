@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   11/01/98
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,16 +12,6 @@
 #ifndef ROOT_TGCanvas
 #define ROOT_TGCanvas
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGCanvas and TGViewPort and TGContainer                              //
-//                                                                      //
-// A TGCanvas is a frame containing two scrollbars (horizontal and      //
-// vertical) and a viewport. The viewport acts as the window through    //
-// which we look at the contents of the container frame.                //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 
@@ -82,11 +72,11 @@ protected:
    virtual void RepeatSearch();
 
 private:
-   TGContainer(const TGContainer&);               // not implemented
-   TGContainer& operator=(const TGContainer&);    // not implemented
+   TGContainer(const TGContainer&) = delete;
+   TGContainer& operator=(const TGContainer&) = delete;
 
 public:
-   TGContainer(const TGWindow *p = 0, UInt_t w = 1, UInt_t h = 1,
+   TGContainer(const TGWindow *p = nullptr, UInt_t w = 1, UInt_t h = 1,
                UInt_t options = kSunkenFrame,
                Pixel_t back = GetDefaultFrameBackground());
    TGContainer(TGCanvas *p,UInt_t options = kSunkenFrame,
@@ -172,11 +162,11 @@ protected:
    TGFrame    *fContainer;   // container frame
 
 private:
-   TGViewPort(const TGViewPort&);             // not implemented
-   TGViewPort& operator=(const TGViewPort&);  // not implemented
+   TGViewPort(const TGViewPort&) = delete;
+   TGViewPort& operator=(const TGViewPort&) = delete;
 
 public:
-   TGViewPort(const TGWindow *p = 0, UInt_t w = 1, UInt_t h = 1,
+   TGViewPort(const TGWindow *p = nullptr, UInt_t w = 1, UInt_t h = 1,
               UInt_t options = kChildFrame,
               Pixel_t back = GetDefaultFrameBackground());
 
@@ -208,8 +198,8 @@ protected:
    Int_t            fScrolling;    // flag which scrolling modes are allowed
 
 private:
-   TGCanvas(const TGCanvas&);              // not implemented
-   TGCanvas& operator=(const TGCanvas&);   // not implemented
+   TGCanvas(const TGCanvas&) = delete;
+   TGCanvas& operator=(const TGCanvas&) = delete;
 
 public:
    enum { kCanvasNoScroll         = 0,
@@ -218,7 +208,7 @@ public:
           kCanvasScrollBoth       = (kCanvasScrollHorizontal | kCanvasScrollVertical)
    };
 
-   TGCanvas(const TGWindow *p = 0, UInt_t w = 1, UInt_t h = 1,
+   TGCanvas(const TGWindow *p = nullptr, UInt_t w = 1, UInt_t h = 1,
             UInt_t options = kSunkenFrame | kDoubleBorder,
             Pixel_t back = GetDefaultFrameBackground());
    virtual ~TGCanvas();

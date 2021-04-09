@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   20/9/2000
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,15 +12,6 @@
 #ifndef ROOT_TGGC
 #define ROOT_TGGC
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGGC and TGGCPool                                                    //
-//                                                                      //
-// Encapsulate a graphics context used in the low level graphics.       //
-// TGGCPool provides a pool of graphics contexts.                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGObject.h"
 #include "TRefCnt.h"
@@ -42,7 +33,7 @@ protected:
    TString GetMaskString() const;    //used in SavePrimitive()
 
 public:
-   TGGC(GCValues_t *values = 0);
+   TGGC(GCValues_t *values = nullptr);
    TGGC(const TGGC &g);
    virtual ~TGGC();
    TGGC &operator=(const TGGC &rhs);

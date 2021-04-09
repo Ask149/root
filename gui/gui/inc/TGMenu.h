@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   09/01/98
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,17 +12,6 @@
 #ifndef ROOT_TGMenu
 #define ROOT_TGMenu
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGMenuBar, TGPopupMenu, TGMenuTitle and TGMenuEntry                  //
-//                                                                      //
-// This header contains all different menu classes.                     //
-//                                                                      //
-// Selecting a menu item will generate the event:                       //
-// kC_COMMAND, kCM_MENU, menu id, user data.                            //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 #include "TGString.h"
@@ -57,14 +46,13 @@ class TGMenuTitle;
 class TTimer;
 class TGSplitButton;
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGMenuEntry                                                          //
-//                                                                      //
-// This class contains all information about a menu entry.              //
-// It is a fully protected class used internally by TGPopupMenu.        //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/** \class TGMenuEntry
+
+This class contains all information about a menu entry.
+It is a fully protected class used internally by TGPopupMenu.
+
+*/
+
 
 class TGMenuEntry : public TObject {
 
@@ -84,17 +72,17 @@ protected:
    TGPopupMenu      *fPopup;     // pointer to popup menu (in case of cascading menus)
 
 private:
-   TGMenuEntry(const TGMenuEntry&);             // not implemented
-   TGMenuEntry& operator=(const TGMenuEntry&);  // not implemented
+   TGMenuEntry(const TGMenuEntry&) = delete;
+   TGMenuEntry& operator=(const TGMenuEntry&) = delete;
 
 public:
-   TGMenuEntry(): fEntryId(0), fUserData(0), fType(), fStatus(0),
-      fEx(0), fEy(0), fEw(0), fEh(0), fLabel(0), fShortcut(0), fPic(0), fPopup(0) { }
+   TGMenuEntry(): fEntryId(0), fUserData(nullptr), fType(), fStatus(0),
+      fEx(0), fEy(0), fEw(0), fEh(0), fLabel(nullptr), fShortcut(nullptr), fPic(nullptr), fPopup(nullptr) { }
    virtual ~TGMenuEntry() { if (fLabel) delete fLabel; if (fShortcut) delete fShortcut; }
 
    Int_t          GetEntryId() const { return fEntryId; }
-   const char    *GetName() const { return fLabel ? fLabel->GetString() : 0; }
-   const char    *GetShortcutText() const { return fShortcut ? fShortcut->GetString() : 0; }
+   const char    *GetName() const { return fLabel ? fLabel->GetString() : nullptr; }
+   const char    *GetShortcutText() const { return fShortcut ? fShortcut->GetString() : nullptr; }
    virtual Int_t  GetStatus() const { return fStatus; }
    EMenuEntryType GetType() const { return fType; }
    TGPopupMenu   *GetPopup() const { return fPopup; }
@@ -111,14 +99,13 @@ public:
 };
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGPopupMenu                                                          //
-//                                                                      //
-// This class creates a popup menu object. Popup menu's are attached    //
-// to TGMenuBar objects.                                                //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/** \class TGPopupMenu
+
+This class creates a popup menu object. Popup menu's are attached
+to TGMenuBar objects.
+
+*/
+
 
 class TGPopupMenu : public TGFrame {
 
@@ -167,27 +154,27 @@ protected:
    static const TGGC   &GetDefaultSelectedBackgroundGC();
 
 private:
-   TGPopupMenu(const TGPopupMenu&);             // not implemented
-   TGPopupMenu& operator=(const TGPopupMenu&);  // not implemented
+   TGPopupMenu(const TGPopupMenu&) = delete;
+   TGPopupMenu& operator=(const TGPopupMenu&) = delete;
 
 public:
-   TGPopupMenu(const TGWindow *p = 0, UInt_t w = 10, UInt_t h = 10,
+   TGPopupMenu(const TGWindow *p = nullptr, UInt_t w = 10, UInt_t h = 10,
                UInt_t options = 0);
    virtual ~TGPopupMenu();
 
-   virtual void AddEntry(TGHotString *s, Int_t id, void *ud = 0,
-                         const TGPicture *p = 0, TGMenuEntry *before = 0);
-   virtual void AddEntry(const char *s, Int_t id, void *ud = 0,
-                         const TGPicture *p = 0, TGMenuEntry *before = 0);
-   virtual void AddSeparator(TGMenuEntry *before = 0);
-   virtual void AddLabel(TGHotString *s, const TGPicture *p = 0,
-                         TGMenuEntry *before = 0);
-   virtual void AddLabel(const char *s, const TGPicture *p = 0,
-                         TGMenuEntry *before = 0);
+   virtual void AddEntry(TGHotString *s, Int_t id, void *ud = nullptr,
+                         const TGPicture *p = nullptr, TGMenuEntry *before = nullptr);
+   virtual void AddEntry(const char *s, Int_t id, void *ud = nullptr,
+                         const TGPicture *p = nullptr, TGMenuEntry *before = nullptr);
+   virtual void AddSeparator(TGMenuEntry *before = nullptr);
+   virtual void AddLabel(TGHotString *s, const TGPicture *p = nullptr,
+                         TGMenuEntry *before = nullptr);
+   virtual void AddLabel(const char *s, const TGPicture *p = nullptr,
+                         TGMenuEntry *before = nullptr);
    virtual void AddPopup(TGHotString *s, TGPopupMenu *popup,
-                         TGMenuEntry *before = 0, const TGPicture *p = 0);
+                         TGMenuEntry *before = nullptr, const TGPicture *p = nullptr);
    virtual void AddPopup(const char *s, TGPopupMenu *popup,
-                         TGMenuEntry *before = 0, const TGPicture *p = 0);
+                         TGMenuEntry *before = nullptr, const TGPicture *p = nullptr);
    virtual void   EnableEntry(Int_t id);
    virtual void   DisableEntry(Int_t id);
    virtual Bool_t IsEntryEnabled(Int_t id);
@@ -235,15 +222,14 @@ public:
 };
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGMenuTitle                                                          //
-//                                                                      //
-// This class creates a menu title. A menu title is a frame             //
-// to which a popup menu can be attached. Menu titles are automatically //
-// created when adding a popup menu to a menubar.                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/** \class TGMenuTitle
+
+This class creates a menu title. A menu title is a frame
+to which a popup menu can be attached. Menu titles are automatically
+created when adding a popup menu to a menubar.
+
+*/
+
 
 class TGMenuTitle : public TGFrame {
 
@@ -265,15 +251,15 @@ protected:
    static const TGGC   *fgDefaultGC;
 
 private:
-   TGMenuTitle(const TGMenuTitle&);             // not implemented
-   TGMenuTitle& operator=(const TGMenuTitle&);  // not implemented
+   TGMenuTitle(const TGMenuTitle&) = delete;
+   TGMenuTitle& operator=(const TGMenuTitle&) = delete;
 
 public:
    static FontStruct_t  GetDefaultFontStruct();
    static const TGGC   &GetDefaultSelectedGC();
    static const TGGC   &GetDefaultGC();
 
-   TGMenuTitle(const TGWindow *p = 0, TGHotString *s = 0, TGPopupMenu *menu = 0,
+   TGMenuTitle(const TGWindow *p = nullptr, TGHotString *s = nullptr, TGPopupMenu *menu = nullptr,
                GContext_t norm = GetDefaultGC()(),
                FontStruct_t font = GetDefaultFontStruct(),
                UInt_t options = 0);
@@ -285,7 +271,7 @@ public:
    Bool_t       GetState() const { return fState; }
    Int_t        GetHotKeyCode() const { return fHkeycode; }
    TGPopupMenu *GetMenu() const { return fMenu; }
-   const char  *GetName() const { return fLabel ? fLabel->GetString() : 0; }
+   const char  *GetName() const { return fLabel ? fLabel->GetString() : nullptr; }
    virtual void DoSendMessage();
    virtual void SavePrimitive(std::ostream &out, Option_t *option = "");
 
@@ -293,13 +279,12 @@ public:
 };
 
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGMenuBar                                                            //
-//                                                                      //
-// This class creates a menu bar.                                       //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
+/** \class TGMenuBar
+
+This class creates a menu bar.
+
+*/
+
 
 class TGMenuBar : public TGHorizontalFrame {
 
@@ -318,16 +303,16 @@ protected:
    TList         *fOutLayouts;         // keeps trace of layouts of hidden menus
    TList         *fNeededSpace;        // keeps trace of space needed for hidden menus
 
-   virtual void AddFrameBefore(TGFrame *f, TGLayoutHints *l = 0,
-                               TGPopupMenu *before = 0);
+   virtual void AddFrameBefore(TGFrame *f, TGLayoutHints *l = nullptr,
+                               TGPopupMenu *before = nullptr);
 
    virtual void BindHotKey(Int_t keycode, Bool_t on = kTRUE);
    virtual void BindKeys(Bool_t on = kTRUE);
            void BindMenu(TGPopupMenu* subMenu, Bool_t on);
 
 private:
-   TGMenuBar(const TGMenuBar&);             // not implemented
-   TGMenuBar& operator=(const TGMenuBar&);  // not implemented
+   TGMenuBar(const TGMenuBar&) = delete;
+   TGMenuBar& operator=(const TGMenuBar&) = delete;
 
 public:
    TGMenuBar(const TGWindow *p = 0, UInt_t w = 60, UInt_t h = 20,

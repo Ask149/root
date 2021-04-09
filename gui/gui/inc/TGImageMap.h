@@ -2,7 +2,7 @@
 // Author: Valeriy Onuchin & Fons Rademakers   18/10/2000
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,14 +12,6 @@
 #ifndef ROOT_TGImageMap
 #define ROOT_TGImageMap
 
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGImageMap (with TGRegion and TGRegionWithId help classes)           //
-//                                                                      //
-// A TGImageMap provides the functionality like a clickable image in    //
-// a web browser with sensitive regions (MAP HTML tag).                 //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGButton.h"
 #include "TPoint.h"
@@ -84,7 +76,7 @@ class TGRegionWithId : public TGRegion {
 
 private:
 
-   TGRegionWithId& operator=(const TGRegionWithId&); // Not implemented
+   TGRegionWithId& operator=(const TGRegionWithId&) = delete;
 
 protected:
    Int_t         fId;      // region id
@@ -116,8 +108,8 @@ class TGImageMap : public TGPictureButton {
 
 private:
 
-   TGImageMap(const TGImageMap&); // Not implemented
-   TGImageMap& operator=(const TGImageMap&); // Not implemented
+   TGImageMap(const TGImageMap&) = delete;
+   TGImageMap& operator=(const TGImageMap&) = delete;
 
 public:
    enum ENavMode { kNavRegions, kNavGrid };
@@ -132,7 +124,7 @@ protected:
    TList      *fTrash;           // collect all objects that need to be cleaned up
 
 public:
-   TGImageMap(const TGWindow *p = 0, const TGPicture *pic = 0);
+   TGImageMap(const TGWindow *p = nullptr, const TGPicture *pic = nullptr);
    TGImageMap(const TGWindow *p, const TString &pic);
    virtual ~TGImageMap();
 

@@ -27,11 +27,15 @@
 
 #include "TClingDeclInfo.h"
 #include "TClingMethodInfo.h"
+#include "TClingUtils.h"
 #include "TDataType.h"
 #include "TDictionary.h"
 
 #include <vector>
 #include <string>
+#include <utility>
+#include <mutex>
+
 #include "llvm/ADT/DenseMap.h"
 
 namespace cling {
@@ -66,6 +70,8 @@ private:
    std::vector<clang::DeclContext::decl_iterator> fIterStack; // Recursion stack for traversing nested scopes.
    std::string           fTitle; // The meta info for the class.
    std::string           fDeclFileName; // Name of the file where the underlying entity is declared.
+
+   std::mutex fOffsetCacheMutex;
    llvm::DenseMap<const clang::Decl*, std::pair<ptrdiff_t, OffsetPtrFunc_t> > fOffsetCache; // Functions already generated for offsets.
 
    explicit TClingClassInfo() = delete;
@@ -79,11 +85,21 @@ public: // Types
 
 public:
 
+   TClingClassInfo(const TClingClassInfo &rhs) : // Copy all but the mutex
+      TClingDeclInfo(rhs),
+      fInterp(rhs.fInterp), fFirstTime(rhs.fFirstTime), fDescend(rhs.fDescend),
+      fIterAll(rhs.fIterAll), fIsIter(rhs.fIsIter), fIter(rhs.fIter),
+      fType(rhs.fType), fIterStack(rhs.fIterStack), fTitle(rhs.fTitle),
+      fDeclFileName(rhs.fDeclFileName), fOffsetCache(rhs.fOffsetCache)
+   {}
    explicit TClingClassInfo(cling::Interpreter *, Bool_t all = kTRUE);
-   explicit TClingClassInfo(cling::Interpreter *, const char *);
+   explicit TClingClassInfo(cling::Interpreter *, const char *classname, bool intantiateTemplate = kTRUE);
    explicit TClingClassInfo(cling::Interpreter *, const clang::Type &);
    explicit TClingClassInfo(cling::Interpreter *, const clang::Decl *);
-   void                 AddBaseOffsetFunction(const clang::Decl* decl, OffsetPtrFunc_t func) { fOffsetCache[decl] = std::make_pair(0L, func); }
+   void                 AddBaseOffsetFunction(const clang::Decl* decl, OffsetPtrFunc_t func) {
+      std::unique_lock<std::mutex> lock(fOffsetCacheMutex);
+      fOffsetCache[decl] = std::make_pair(0L, func);
+   }
    void                 AddBaseOffsetValue(const clang::Decl* decl, ptrdiff_t offset);
    long                 ClassProperty() const;
    void                 Delete(void *arena, const ROOT::TMetaUtils::TNormalizedCtxt &normCtxt) const;
@@ -125,7 +141,7 @@ public:
    ptrdiff_t            GetBaseOffset(TClingClassInfo* toBase, void* address, bool isDerivedObject);
    const clang::Type   *GetType() const { return fType; } // Underlying representation with Double32_t
    std::vector<std::string> GetUsingNamespaces();
-   bool                 HasDefaultConstructor() const;
+   ROOT::TMetaUtils::EIOCtorCategory HasDefaultConstructor(bool checkio = false, std::string *type_name = nullptr) const;
    bool                 HasMethod(const char *name) const;
    void                 Init(const char *name);
    void                 Init(const clang::Decl*);

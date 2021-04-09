@@ -2,7 +2,7 @@
 // Author: Fons Rademakers   08/01/98
 
 /*************************************************************************
- * Copyright (C) 1995-2000, Rene Brun and Fons Rademakers.               *
+ * Copyright (C) 1995-2021, Rene Brun and Fons Rademakers.               *
  * All rights reserved.                                                  *
  *                                                                       *
  * For the licensing terms see $ROOTSYS/LICENSE.                         *
@@ -12,21 +12,6 @@
 #ifndef ROOT_TGTextEntry
 #define ROOT_TGTextEntry
 
-
-//////////////////////////////////////////////////////////////////////////
-//                                                                      //
-// TGTextEntry                                                          //
-//                                                                      //
-// A TGTextEntry is a one line text input widget.                       //
-//                                                                      //
-// Changing text in the text entry widget will generate the event:      //
-// kC_TEXTENTRY, kTE_TEXTCHANGED, widget id, 0.                         //
-// Hitting the enter key will generate:                                 //
-// kC_TEXTENTRY, kTE_ENTER, widget id, 0.                               //
-// Hitting the tab key will generate:                                   //
-// kC_TEXTENTRY, kTE_TAB, widget id, 0.                                 //
-//                                                                      //
-//////////////////////////////////////////////////////////////////////////
 
 #include "TGFrame.h"
 #include "TGWidget.h"
@@ -90,8 +75,8 @@ protected:
    static const TGGC   &GetDefaultSelectedBackgroundGC();
 
 private:
-   TGTextEntry(const TGTextEntry&);              // not implemented
-   TGTextEntry& operator=(const TGTextEntry&);   // not implemented
+   TGTextEntry(const TGTextEntry&) = delete;
+   TGTextEntry& operator=(const TGTextEntry&) = delete;
 
 public:
    static FontStruct_t  GetDefaultFontStruct();
@@ -186,7 +171,7 @@ public:
    virtual  Bool_t      HandleTimer(TTimer *t);
    virtual  Bool_t      HandleConfigureNotify(Event_t *event);
 
-   virtual  void        TextChanged(const char *text = 0);      //*SIGNAL*
+   virtual  void        TextChanged(const char *text = nullptr);//*SIGNAL*
    virtual  void        ReturnPressed();                        //*SIGNAL*
    virtual  void        TabPressed();                           //*SIGNAL*
    virtual  void        ShiftTabPressed();                      //*SIGNAL*
